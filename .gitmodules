@@ -1,0 +1,3 @@
+[submodule "GT-Movie-Store"]
+	path = GT-Movie-Store
+	url = https://github.com/Rachellohan/GT-Movie-Store.git
