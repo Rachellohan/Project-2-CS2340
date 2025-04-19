@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'pokemon',
     'pokeMarketplace',
     'accounts',
     'cart',
@@ -72,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pokemon.wsgi.application'
+WSGI_APPLICATION = 'pokeMarketplace.wsgi.application'
 
 
 # Database
