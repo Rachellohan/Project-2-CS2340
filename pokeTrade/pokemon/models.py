@@ -6,7 +6,7 @@ class Pokemon(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField()
     description = models.TextField()
-    image = models.ImageField(upload_to='movie_images/') 
+    image = models.ImageField(upload_to='pokemon_images/') 
 
     def __str__(self):
         return str(self.id) + ' - ' + self.name
@@ -19,4 +19,4 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.id) + ' - ' + self.movie.name
+        return str(self.id) + ' - ' + self.pokemon.name
