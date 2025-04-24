@@ -1,21 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="p-3">
+<div class="p-4">
   <div class="container">
-    <div class="row mt-3">
-      <div class="col mx-auto mb-3">
-        <h2>My Orders</h2>
-        <hr />
+    <div class="row mt-4 justify-content-center">
+      <div class="col-md-10">
+        <h2 class="text-center text-success mb-3">My Orders</h2>
+        <hr class="border-success" />
         {% for order in template_data.orders %}
-        <div class="card mb-4">
-          <div class="card-header">
+        <div class="card shadow-sm rounded-4 mb-4 border-0" style="background-color: #f8fff8;">
+          <div class="card-header bg-success text-white fw-semibold rounded-top-4">
             Order #{{ order.id }}
           </div>
           <div class="card-body">
-            <b>Date:</b> {{ order.date }}<br />
-            <b>Total:</b> ${{ order.total }}<br />
-            <table class="table table-bordered table-striped text-center mt-3">
-              <thead>
+            <p class="mb-2">
+              <strong class="text-success">Date:</strong> {{ order.date }}<br />
+              <strong class="text-success">Total:</strong> ${{ order.total }}
+            </p>
+            <table class="table table-bordered table-striped table-hover text-center mt-3">
+              <thead class="table-success">
                 <tr>
                   <th scope="col">Item ID</th>
                   <th scope="col">Pokemon</th>
@@ -28,7 +30,7 @@
                 <tr>
                   <td>{{ item.Pokemon.id }}</td>
                   <td>
-                    <a class="link-dark" href="{% url 'Pokemons.show' id=item.Pokemon.id %}">                    
+                    <a class="link-success fw-semibold" href="{% url 'Pokemons.show' id=item.Pokemon.id %}">
                       {{ item.Pokemon.name }}
                     </a>
                   </td>
@@ -39,6 +41,10 @@
               </tbody>
             </table>
           </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info text-center mt-4">
+          You have no orders yet.
         </div>
         {% endfor %}
       </div>

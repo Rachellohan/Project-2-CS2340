@@ -1,40 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
-<div class="p-3">
+<div class="p-4">
   <div class="container">
-    <div class="row mt-3">
-      <div class="col mx-auto mb-3">
-        <h2>List of Pokemon</h2>
-        <hr />
-        <p class="card-text">
-          <form method="GET">
-            <div class="row">
-              <div class="col-auto">
-                <div class="input-group col-auto">
-                  <div class="input-group-text">Search</div>
-                  <input type="text" class="form-control" name="search">
-                </div>
-              </div>
-              <div class="col-auto">
-                <button class="btn bg-dark text-white" type="submit">Search</button>
-              </div>
-            </div>
-          </form>
-        </p>
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-10 text-center mb-4">
+        <h2 class="text-success">List of Pokémon</h2>
+        <hr class="border-success" />
+        <form method="GET" class="d-flex justify-content-center">
+          <div class="input-group w-50">
+            <span class="input-group-text bg-success text-white fw-semibold">Search</span>
+            <input type="text" class="form-control border-success" name="search" placeholder="Search by name...">
+            <button class="btn btn-success" type="submit">Go</button>
+          </div>
+        </form>
       </div>
     </div>
+
     <div class="row">
       {% for pokemon in template_data.pokemons %}
-      <div class="col-md-4 col-lg-3 mb-2">
-        <div class="p-2 card align-items-center pt-4">
-          <img src="{{ pokemon.image.url }}" class="card-img-top rounded img-card-200">
-          <div class="card-body text-center">
-            <a href="{% url 'pokemons.show' id=pokemon.id %}" class="btn bg-dark text-white">
+      <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100 text-center" style="background-color: #f8fff8;">
+          <div class="p-3">
+            <img src="{{ pokemon.image.url }}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="{{ pokemon.name }}">
+          </div>
+          <div class="card-body">
+            <a href="{% url 'pokemons.show' id=pokemon.id %}" class="btn btn-success rounded-pill px-4">
               {{ pokemon.name }}
             </a>
           </div>
         </div>
+      </div>
+      {% empty %}
+      <div class="col text-center mt-4">
+        <div class="alert alert-info">No Pokémon found matching your search.</div>
       </div>
       {% endfor %}
     </div>

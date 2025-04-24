@@ -1,86 +1,72 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
-<div class="p-3">
+<div class="p-4">
   <div class="container">
-    <div class="row mt-3">
-      <div class="col-md-6 mx-auto mb-3">
-        <h2>{{ template_data.pokemon.name }}</h2>
-        <hr />
-        <p><b>Description:</b> {{ template_data.pokemon.description }}</p>
-        <p><b>Price:</b> ${{ template_data.pokemon.price }}</p>
-        <p class="card-text">
-          <form method="post" action="{% url 'cart.add' id=template_data.pokemon.id %}">
-            <div class="row">
-              {% csrf_token %}
-              <div class="col-auto">
-                <div class="input-group col-auto">
-                  <div class="input-group-text">Quantity</div>
-                  <input type="number" min="1" max="10" class="form-control quantity-input" name="quantity" value="1">
-                </div>
-              </div>
-              <div class="col-auto">
-                <button class="btn bg-dark text-white" type="submit">Add to cart</button>
-              </div>
-            </div>
-          </form>
-        </p>
+    <div class="row justify-content-center align-items-center mt-4">
+      <!-- Left Column: Details + Reviews -->
+      <div class="col-lg-6 mb-4">
+        <h2 class="text-success">{{ template_data.pokemon.name }}</h2>
+        <hr class="border-success" />
+        <p><strong>Description:</strong> {{ template_data.pokemon.description }}</p>
+        <p><strong>Price:</strong> ${{ template_data.pokemon.price }}</p>
 
-        <h2>Reviews</h2>
-        <hr />
-        <ul class="list-group">
+        <form method="post" action="{% url 'cart.add' id=template_data.pokemon.id %}" class="mt-3 mb-4">
+          {% csrf_token %}
+          <div class="row g-2 align-items-center">
+            <div class="col-auto">
+              <label class="input-group-text bg-success text-white fw-semibold">Quantity</label>
+            </div>
+            <div class="col-auto">
+              <input type="number" min="1" max="10" name="quantity" value="1" class="form-control border-success">
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-success rounded-pill px-4">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <h4 class="text-success mt-4">Reviews</h4>
+        <hr class="border-success" />
+        <ul class="list-group mb-4">
           {% for review in template_data.reviews %}
-          <li class="list-group-item pb-3 pt-3">
-            <h5 class="card-title">
-              Review by {{ review.user.username }}
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted">
-              {{ review.date }}
-            </h6>
-            <p class="card-text">{{ review.comment }}</p>
+          <li class="list-group-item shadow-sm mb-2 rounded">
+            <h6 class="mb-1"><strong>{{ review.user.username }}</strong></h6>
+            <small class="text-muted">{{ review.date }}</small>
+            <p class="mt-2">{{ review.comment }}</p>
             {% if user.is_authenticated and user == review.user %}
-            <a class="btn btn-primary"
-              href="{% url 'pokemons.edit_review' id=template_data.pokemon.id review_id=review.id %}">
-              Edit
-            </a>
-            <a class="btn btn-danger"
-              href="{% url 'pokemons.delete_review' id=template_data.pokemon.id review_id=review.id %}">
-              Delete
-            </a>
+            <a class="btn btn-outline-success btn-sm me-2" href="{% url 'pokemons.edit_review' id=template_data.pokemon.id review_id=review.id %}">Edit</a>
+            <a class="btn btn-outline-danger btn-sm" href="{% url 'pokemons.delete_review' id=template_data.pokemon.id review_id=review.id %}">Delete</a>
             {% endif %}
           </li>
+          {% empty %}
+          <div class="alert alert-info text-center">No reviews yet. Be the first to write one!</div>
           {% endfor %}
         </ul>
 
         {% if user.is_authenticated %}
-        <div class="container mt-4">
-          <div class="row justify-content-center">
-            <div class="col-12">
-              <div class="card shadow p-3 mb-4 rounded">
-                <div class="card-body">
-                  <b class="text-start">Create a review</b><br /><br />
-                  <form method="POST" action="{% url 'pokemons.create_review' id=template_data.pokemon.id %}">
-                    {% csrf_token %}
-                    <p>
-                      <label for="comment">Comment:</label>
-                      <textarea name="comment" required class="form-control" id="comment"></textarea>
-                    </p>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn bg-dark text-white">
-                        Add Review
-                      </button>
-                    </div>
-                  </form>
-                </div>
+        <div class="card shadow-sm border-0 rounded-4" style="background-color: #f8fff8;">
+          <div class="card-body">
+            <h5 class="text-success">Create a Review</h5>
+            <form method="POST" action="{% url 'pokemons.create_review' id=template_data.pokemon.id %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                <textarea name="comment" id="comment" class="form-control border-success" rows="4" placeholder="Write your review here..." required></textarea>
               </div>
-            </div>
+              <div class="text-end">
+                <button type="submit" class="btn btn-success rounded-pill px-4">Add Review</button>
+              </div>
+            </form>
           </div>
         </div>
         {% endif %}
       </div>
-      <div class="col-md-6 mx-auto mb-3 text-center">
-        <img src="{{ template_data.pokemon.image.url }}" class="rounded img-card-400" />
+
+      <!-- Right Column: Image -->
+      <div class="col-lg-5 text-center mb-4">
+        <img src="{{ template_data.pokemon.image.url }}" class="img-fluid rounded shadow-sm" style="max-height: 400px; object-fit: contain;" alt="{{ template_data.pokemon.name }}">
       </div>
     </div>
   </div>
