@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load cart_filters %}
+<div class="p-4">
+  <div class="container">
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-10">
+        <h2 class="text-center text-success mb-3">Shopping Cart</h2>
+        <hr class="border-success" />
+        {% if template_data.pokemons_in_cart|length > 0 %}
+        <div class="card shadow-sm rounded-4 border-0" style="background-color: #f8fff8;">
+          <div class="card-body p-4">
+            <table class="table table-bordered table-hover table-striped text-center align-middle">
+              <thead class="table-success">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for pokemon in template_data.pokemons_in_cart %}
+                <tr>
+                  <td>{{ pokemon.id }}</td>
+                  <td class="fw-semibold">{{ pokemon.name }}</td>
+                  <td>${{ pokemon.price }}</td>
+                  <td>{{ request.session.cart|get_quantity:pokemon.id }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="d-flex justify-content-between align-items-center mt-4">
+              <h5 class="text-success m-0"><strong>Total to pay:</strong> ${{ template_data.cart_total }}</h5>
+              <div class="d-flex gap-2">
+                <a href="{% url 'cart.purchase' %}" class="btn btn-success px-4 rounded-pill">
+                  Purchase
+                </a>
+                <a href="{% url 'cart.clear' %}">
+                  <button class="btn btn-outline-danger px-3 rounded-pill">
+                    Remove all Pokémons
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center mt-4">
+          Your cart is currently empty.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

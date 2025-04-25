@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="p-4">
+  <div class="container">
+    <div class="row justify-content-center mt-4 align-items-center">
+      <div class="col-md-6 mb-4">
+        <h2 class="text-success mb-3">About</h2>
+        <hr class="border-success" />
+        <p class="fs-5">
+          At <strong>Poke Store</strong>, we offer a vast digital library that spans across genres,
+          ensuring there's something for every Pokémon lover. Browse our extensive collection of films,
+          from the latest releases to timeless classics and hidden gems. With just a few clicks, you can
+          rent or purchase your favorite titles and stream them instantly in high-definition quality.
+        </p>
+        <p class="fs-5">
+          Discover the convenience of our digital platform — watch on your preferred device, whether it's a
+          smart TV, tablet, or smartphone. Our intuitive search and smart recommendations make finding your
+          next "Poke Night" pick easier and more fun than ever.
+        </p>
+      </div>
+      <div class="col-md-6 text-center mb-4">
+        <img src="{% static 'img/pikachu.gif' %}" class="img-fluid rounded shadow-sm" style="max-height: 300px;" alt="Animated Pikachu" alt="About Poke Store"/>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

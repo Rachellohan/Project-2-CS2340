@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-4 mt-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-lg rounded-4 border-0" style="background-color: #f8fff8;">
+          <div class="card-body p-4">
+            <h2 class="text-center text-success mb-3">Login</h2>
+            <hr class="border-success" />
+            {% if template_data.error %}
+            <div class="alert alert-danger" role="alert">
+              {{ template_data.error }}
+            </div>
+            {% endif %}
+            <form method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="username" class="form-label text-success">Username</label>
+                <input id="username" type="text" name="username" required
+                  autocomplete="username" class="form-control border-success">
+              </div>
+              <div class="mb-4">
+                <label for="password" class="form-label text-success">Password</label>
+                <input id="password" type="password" name="password" required
+                  autocomplete="current-password" class="form-control border-success">
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-success px-4 py-2 rounded-pill">
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
