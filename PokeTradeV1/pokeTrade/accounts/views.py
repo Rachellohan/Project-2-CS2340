@@ -1,6 +1,7 @@
 import random
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -75,27 +76,40 @@ def profile(request):
         'template_data': {
             'user': request.user,
             'team': random_team,
-            'total_pokemon': user_pokemons.count(),
-            'pokemons': user_pokemons,
+            'total_pokemon': total_pokemon  
         }
     })
 
-@login_required
-def trade(request, pokemon_id):
-    user_pokemon = get_object_or_404(Pokemon, id=pokemon_id, owner=request.user)
-    available_pokemon = Pokemon.objects.filter(price=user_pokemon.price).exclude(owner=request.user)
+def show(request, id):
+    try:
+        pokemon = Pokemon.objects.get(pk=id)
+    except Pokemon.DoesNotExist:
+        # Try to fetch from PokeAPI
+        url = f"https://pokeapi.co/api/v2/pokemon/{id}/"
+        response = requests.get(url)
 
-    if request.method == 'POST':
-        selected_pokemon_id = request.POST.get('selected_pokemon')
-        selected_pokemon = get_object_or_404(Pokemon, id=selected_pokemon_id)
-        selected_pokemon.owner = request.user
-        selected_pokemon.save()
-        user_pokemon.delete()
-        return redirect('accounts.profile')
+        if response.status_code != 200:
+            return render(request, "404.html", status=404)
 
-    return render(request, 'accounts/trade_pokemon.html', {
-        'template_data': {
-            'user_pokemon': user_pokemon,
-            'available_pokemon': available_pokemon
+        data = response.json()
+
+        # You need a default user to associate with the new Pokémon (e.g., user with ID 1)
+        default_user = User.objects.first()
+
+        pokemon = Pokemon.objects.create(
+            id=id,
+            name=data['name'].capitalize(),
+            price=5.00,
+            description="Imported from PokéAPI",
+            image=data['sprites']['front_default'],
+            owner=default_user  # or assign a fallback like request.user if logged in
+        )
+
+    reviews = Review.objects.filter(pokemon=pokemon)
+
+    return render(request, "pokemons/show.html", {
+        "template_data": {
+            "pokemon": pokemon,
+            "reviews": reviews
         }
     })

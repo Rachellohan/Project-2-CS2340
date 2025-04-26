@@ -97,7 +97,7 @@ def show(request, id):
     try:
         pokemon = Pokemon.objects.get(pk=id)
     except Pokemon.DoesNotExist:
-        # fetch from PokeAPI
+        # Try to fetch from PokeAPI
         url = f"https://pokeapi.co/api/v2/pokemon/{id}/"
         response = requests.get(url)
 
@@ -106,6 +106,7 @@ def show(request, id):
 
         data = response.json()
 
+        # You need a default user to associate with the new Pokémon (e.g., user with ID 1)
         default_user = User.objects.first()
 
         pokemon = Pokemon.objects.create(
@@ -114,7 +115,7 @@ def show(request, id):
             price=5.00,
             description="Imported from PokéAPI",
             image=data['sprites']['front_default'],
-            owner=default_user  
+            owner=default_user  # or assign a fallback like request.user if logged in
         )
 
     reviews = Review.objects.filter(pokemon=pokemon)
