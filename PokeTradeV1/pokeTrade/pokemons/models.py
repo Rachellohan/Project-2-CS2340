@@ -21,7 +21,7 @@ class Pokemon(models.Model):
     
     def save(self, *args, **kwargs):
          if self.price == 0:
-             self.price = random.randint(1, 20)  # Random between 100 and 1000
+             self.price = random.randint(1, 20)
          super().save(*args, **kwargs)
  
 
