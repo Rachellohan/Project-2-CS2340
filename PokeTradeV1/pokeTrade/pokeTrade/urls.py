@@ -27,6 +27,7 @@ urlpatterns = [
     path('pokemons/', include('pokemons.urls')),
     path('accounts/', include('accounts.urls')),
     path('cart/', include('cart.urls')),
+    path('friends_page/', include('friends_page.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,
