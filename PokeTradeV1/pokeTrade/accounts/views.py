@@ -1,5 +1,4 @@
 import random
-import requests
 from django.shortcuts import render
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from .forms import CustomUserCreationForm, CustomErrorList
@@ -61,39 +60,5 @@ def profile(request):
             'user': request.user,
             'team': random_team,
             'total_pokemon': total_pokemon  
-        }
-    })
-
-def show(request, id):
-    try:
-        pokemon = Pokemon.objects.get(pk=id)
-    except Pokemon.DoesNotExist:
-        # Try to fetch from PokeAPI
-        url = f"https://pokeapi.co/api/v2/pokemon/{id}/"
-        response = requests.get(url)
-
-        if response.status_code != 200:
-            return render(request, "404.html", status=404)
-
-        data = response.json()
-
-        # You need a default user to associate with the new Pokémon (e.g., user with ID 1)
-        default_user = User.objects.first()
-
-        pokemon = Pokemon.objects.create(
-            id=id,
-            name=data['name'].capitalize(),
-            price=5.00,
-            description="Imported from PokéAPI",
-            image=data['sprites']['front_default'],
-            owner=default_user  # or assign a fallback like request.user if logged in
-        )
-
-    reviews = Review.objects.filter(pokemon=pokemon)
-
-    return render(request, "pokemons/show.html", {
-        "template_data": {
-            "pokemon": pokemon,
-            "reviews": reviews
         }
     })
