@@ -15,9 +15,8 @@ class Pokemon(models.Model):
         return str(self.id) + ' - ' + self.name
     
     def save(self, *args, **kwargs):
-         # Assign a random money value only if it's not already set
          if self.price == 0:
-             self.price = random.randint(1, 100)  # Random between 100 and 1000
+             self.price = random.randint(1, 20)  # Random between 100 and 1000
          super().save(*args, **kwargs)
  
 
