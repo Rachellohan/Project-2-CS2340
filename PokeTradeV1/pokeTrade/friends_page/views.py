@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.shortcuts import render, redirect
 from .models import Friend, User
 
@@ -14,4 +15,11 @@ def index(request):
         'players': all_players,
         'friends': current_friends,
     }
+=======
+from django.shortcuts import render
+
+def index(request):
+    template_data = {}
+    template_data['title'] = 'Friends'
+>>>>>>> d5e5002 (pycache files)
     return render(request, 'friends_page/index.html', {'template_data': template_data})
