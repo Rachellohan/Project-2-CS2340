@@ -8,11 +8,7 @@ class Pokemon(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField(default=0)
     description = models.TextField()
-<<<<<<< HEAD
-    image = image = models.URLField()
-=======
     image = models.URLField()
->>>>>>> add_money_act
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default="5")  
 
 
