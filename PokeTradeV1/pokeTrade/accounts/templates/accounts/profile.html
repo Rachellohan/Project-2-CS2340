@@ -4,7 +4,10 @@
   <h2 class="text-success">Your Profile</h2>
   <hr class="border-success" />
   <p><strong>Username:</strong> {{ template_data.user.username }}</p>
-  <p><strong>Email:</strong> {{ template_data.user.email }}</p>
-  <!-- Add more user fields as needed -->
+  <p><strong>Team:</strong> {{ template_data.team }}</p>
+  <p><strong>Email:</strong> {{ "charizard@fireball.edu" }}</p>
+  <p><strong>Date Joined:</strong> {{ template_data.user.date_joined }}</p>
+  <p><strong>Total Poke:</strong> {{ template_data.total_pokemon }}</p>
+
 </div>
 {% endblock content %}

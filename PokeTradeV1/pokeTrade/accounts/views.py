@@ -1,9 +1,11 @@
+import random
 from django.shortcuts import render
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from .forms import CustomUserCreationForm, CustomErrorList
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from pokemons.models import Pokemon
 
 @login_required
 def logout(request):
@@ -49,8 +51,14 @@ def orders(request):
 
 @login_required
 def profile(request):
+    teams = ['Team Valor', 'Team Instinct', 'Team Mystic']
+    random_team = random.choice(teams)
+    total_pokemon = Pokemon.objects.filter(owner=request.user).count()
+
     return render(request, 'accounts/profile.html', {
         'template_data': {
-            'user': request.user
+            'user': request.user,
+            'team': random_team,
+            'total_pokemon': total_pokemon  
         }
     })

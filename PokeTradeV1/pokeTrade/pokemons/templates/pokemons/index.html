@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="pokemon-container">
       {% for pokemon in template_data.pokemons %}
       <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
         <div class="card shadow-sm border-0 rounded-4 h-100 text-center" style="background-color: #f8fff8;">
@@ -39,4 +39,46 @@
     </div>
   </div>
 </div>
+<script>
+  function fetchKantoPokemon() {
+    fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+      .then(response => response.json())
+      .then(function(allpokemon) {
+        allpokemon.results.forEach(function(pokemon) {
+          fetchPokemonData(pokemon);
+        });
+      });
+  }
+
+  function fetchPokemonData(pokemon) {
+    fetch(pokemon.url)
+      .then(response => response.json())
+      .then(function(data) {
+        displayPokemon(data);
+      });
+  }
+
+  function displayPokemon(pokemonData) {
+    const container = document.getElementById('pokemon-container');
+    const pokemonCard = `
+      <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100 text-center" style="background-color: #f8fff8;">
+          <div class="p-3">
+            <img src="${pokemonData.sprites.front_default}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="${pokemonData.name}">
+          </div>
+          <div class="card-body">
+            <a href="/pokemons/${pokemonData.id}" class="btn btn-success rounded-pill px-4">
+              ${pokemonData.name}
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', pokemonCard);
+  }
+
+  window.onload = function() {
+    fetchKantoPokemon();
+  };
+</script>
 {% endblock content %}

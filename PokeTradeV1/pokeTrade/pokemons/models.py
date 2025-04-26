@@ -7,6 +7,8 @@ class Pokemon(models.Model):
     price = models.IntegerField()
     description = models.TextField()
     image = models.ImageField(upload_to='pokemon_images/')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default="5")  
+
 
     def __str__(self):
         return str(self.id) + ' - ' + self.name
