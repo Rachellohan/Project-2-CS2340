@@ -7,7 +7,7 @@ class Pokemon(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField(default=0)
     description = models.TextField()
-    image = image = models.URLField()
+    image = models.URLField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default="5")  
 
 
