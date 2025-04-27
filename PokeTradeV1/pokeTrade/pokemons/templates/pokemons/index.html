@@ -35,25 +35,23 @@ function validateSearch() {
   return true;
 }
 
-// Fetch and display Pokémon
-function fetchKantoPokemon(searchTerm) {
-  fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+// Fetch Pokémon from the Django database
+function fetchPokemonsFromDjango(searchTerm) {
+  const url = new URL('/pokemons/fetch_pokemons/', window.location.origin);  // Adjust URL if needed
+  if (searchTerm) {
+    url.searchParams.append('search', searchTerm);  // Append the search term if provided
+  }
+
+  fetch(url)
     .then(response => response.json())
     .then(function(allpokemon) {
-      allpokemon.results.forEach(function(pokemon) {
-        if (!searchTerm || pokemon.name.includes(searchTerm.toLowerCase())) {
-          fetchPokemonData(pokemon);
-        }
-      });
-    });
-}
+      const container = document.getElementById('pokemon-container');
+      container.innerHTML = '';  // Clear existing Pokémon before adding new ones
 
-// Fetch individual Pokémon data
-function fetchPokemonData(pokemon) {
-  fetch(pokemon.url)
-    .then(response => response.json())
-    .then(function(data) {
-      displayPokemon(data);
+      // Loop through the results and display Pokémon
+      allpokemon.results.forEach(function(pokemon) {
+        displayPokemon(pokemon);  // Call function to display each Pokémon
+      });
     });
 }
 
@@ -64,7 +62,7 @@ function displayPokemon(pokemonData) {
     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
       <div class="card shadow-sm border-0 rounded-4 h-100 text-center" style="background-color: #f8fff8;">
         <div class="p-3">
-          <img src="${pokemonData.sprites.front_default}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="${pokemonData.name}">
+          <img src="${pokemonData.image}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="${pokemonData.name}">
         </div>
         <div class="card-body">
           <a href="/pokemons/${pokemonData.id}" class="btn btn-success rounded-pill px-4">
@@ -81,7 +79,8 @@ function displayPokemon(pokemonData) {
 window.onload = function() {
   const urlParams = new URLSearchParams(window.location.search);
   const searchTerm = urlParams.get('search');
-  fetchKantoPokemon(searchTerm);
+  
+  fetchPokemonsFromDjango(searchTerm || '');  // If searchTerm exists, use it; otherwise, show all Pokémon
 };
 </script>
 

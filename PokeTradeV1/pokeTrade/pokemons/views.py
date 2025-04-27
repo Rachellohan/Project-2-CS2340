@@ -4,6 +4,8 @@ from .models import Pokemon, Review
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Pokemon, Review
+from django.http import JsonResponse
+
 
 
 def index(request):
@@ -27,6 +29,27 @@ def show(request, id):
     template_data['pokemon'] = pokemon
     template_data['reviews'] = reviews
     return render(request, 'pokemons/show.html', {'template_data': template_data})
+
+def fetch_pokemons(request):
+    search_term = request.GET.get('search', '')  # Default to an empty string if no search term
+
+    # Query Pokémon from the database
+    pokemons = Pokemon.objects.all()  # Fetch all Pokémon
+    if search_term:
+        pokemons = pokemons.filter(name__icontains=search_term)  # Filter based on the search term
+
+    # Prepare the data to send to the frontend
+    pokemons_data = [
+        {
+            'id': pokemon.id,
+            'name': pokemon.name,
+            'image': pokemon.image,  
+            'price': pokemon.price,
+        }
+        for pokemon in pokemons
+    ]
+
+    return JsonResponse({'results': pokemons_data})
 
 @login_required
 def create_review(request, id):
