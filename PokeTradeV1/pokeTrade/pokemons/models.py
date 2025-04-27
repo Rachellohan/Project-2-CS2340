@@ -7,22 +7,16 @@ class Pokemon(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField(default=0)
     description = models.TextField()
-<<<<<<< HEAD
-    image = image = models.URLField()
-=======
-    image = models.URLField()
->>>>>>> add_money_act
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, default="5")  
-
+    image = models.URLField()  # Cleaned up
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default="5")
 
     def __str__(self):
         return str(self.id) + ' - ' + self.name
     
     def save(self, *args, **kwargs):
-         if self.price == 0:
-             self.price = random.randint(1, 20)
-         super().save(*args, **kwargs)
- 
+        if self.price == 0:
+            self.price = random.randint(1, 20)
+        super().save(*args, **kwargs)
 
 class Review(models.Model):
     id = models.AutoField(primary_key=True)

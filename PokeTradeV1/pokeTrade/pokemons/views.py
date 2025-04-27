@@ -4,11 +4,9 @@ from .models import Pokemon, Review
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Pokemon, Review
-<<<<<<< HEAD
-=======
+
 from django.http import JsonResponse
 
->>>>>>> add_money_act
 
 
 def index(request):
