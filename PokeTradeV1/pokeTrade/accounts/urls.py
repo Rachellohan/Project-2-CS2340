@@ -7,4 +7,5 @@ urlpatterns = [
     path('logout/', views.logout, name='accounts.logout'),
     path('orders/', views.orders, name='accounts.orders'),
     path('profile/', views.profile, name='accounts.profile'),
+    path('trade/<int:pokemon_id>/', views.trade, name='accounts.trade'),
 ]
