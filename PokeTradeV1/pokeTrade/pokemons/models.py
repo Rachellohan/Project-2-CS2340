@@ -7,7 +7,11 @@ class Pokemon(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField(default=0)
     description = models.TextField()
+<<<<<<< HEAD
     image = image = models.URLField()
+=======
+    image = models.URLField()
+>>>>>>> add_money_act
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default="5")  
 
 
@@ -15,9 +19,8 @@ class Pokemon(models.Model):
         return str(self.id) + ' - ' + self.name
     
     def save(self, *args, **kwargs):
-         # Assign a random money value only if it's not already set
          if self.price == 0:
-             self.price = random.randint(1, 100)  # Random between 100 and 1000
+             self.price = random.randint(1, 20)
          super().save(*args, **kwargs)
  
 
