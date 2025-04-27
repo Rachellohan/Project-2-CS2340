@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load static %}
+
+{% block content %}
 <div class="p-4">
   <div class="container">
     <div class="row justify-content-center mt-3">
       <div class="col-md-10 text-center mb-4">
         <h2 class="text-success">List of Pokémon</h2>
         <hr class="border-success" />
-        <form method="GET" class="d-flex justify-content-center">
+        <!-- SEARCH FORM -->
+        <form method="GET" action="" onsubmit="return validateSearch()" class="d-flex justify-content-center">
           <div class="input-group w-50">
             <span class="input-group-text bg-success text-white fw-semibold">Search</span>
-            <input type="text" class="form-control border-success" name="search" placeholder="Search by name...">
+            <input type="text" class="form-control border-success" name="search" placeholder="Search by name..." value="{{ request.GET.search }}">
             <button class="btn btn-success" type="submit">Go</button>
           </div>
         </form>
@@ -18,67 +20,69 @@
     </div>
 
     <div class="row" id="pokemon-container">
-      {% for pokemon in template_data.pokemons %}
-      <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div class="card shadow-sm border-0 rounded-4 h-100 text-center" style="background-color: #f8fff8;">
-          <div class="p-3">
-            <img src="{{ pokemon.image.url }}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="{{ pokemon.name }}">
-          </div>
-          <div class="card-body">
-            <a href="{% url 'pokemons.show' id=pokemon.id %}" class="btn btn-success rounded-pill px-4">
-              {{ pokemon.name }}
-            </a>
-          </div>
-        </div>
-      </div>
-      {% empty %}
-      <div class="col text-center mt-4">
-        <div class="alert alert-info">No Pokémon found matching your search.</div>
-      </div>
-      {% endfor %}
+      <!-- Pokémon cards will be dynamically inserted here -->
     </div>
   </div>
 </div>
+
 <script>
-  function fetchKantoPokemon() {
-    fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
-      .then(response => response.json())
-      .then(function(allpokemon) {
-        allpokemon.results.forEach(function(pokemon) {
+// Prevent empty search submissions
+function validateSearch() {
+  const searchInput = document.querySelector('input[name="search"]').value;
+  if (searchInput.trim() === "") {
+    return false;
+  }
+  return true;
+}
+
+// Fetch and display Pokémon
+function fetchKantoPokemon(searchTerm) {
+  fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+    .then(response => response.json())
+    .then(function(allpokemon) {
+      allpokemon.results.forEach(function(pokemon) {
+        if (!searchTerm || pokemon.name.includes(searchTerm.toLowerCase())) {
           fetchPokemonData(pokemon);
-        });
+        }
       });
-  }
+    });
+}
 
-  function fetchPokemonData(pokemon) {
-    fetch(pokemon.url)
-      .then(response => response.json())
-      .then(function(data) {
-        displayPokemon(data);
-      });
-  }
+// Fetch individual Pokémon data
+function fetchPokemonData(pokemon) {
+  fetch(pokemon.url)
+    .then(response => response.json())
+    .then(function(data) {
+      displayPokemon(data);
+    });
+}
 
-  function displayPokemon(pokemonData) {
-    const container = document.getElementById('pokemon-container');
-    const pokemonCard = `
-      <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div class="card shadow-sm border-0 rounded-4 h-100 text-center" style="background-color: #f8fff8;">
-          <div class="p-3">
-            <img src="${pokemonData.sprites.front_default}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="${pokemonData.name}">
-          </div>
-          <div class="card-body">
-            <a href="/pokemons/${pokemonData.id}" class="btn btn-success rounded-pill px-4">
-              ${pokemonData.name}
-            </a>
-          </div>
+// Display Pokémon Card
+function displayPokemon(pokemonData) {
+  const container = document.getElementById('pokemon-container');
+  const pokemonCard = `
+    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+      <div class="card shadow-sm border-0 rounded-4 h-100 text-center" style="background-color: #f8fff8;">
+        <div class="p-3">
+          <img src="${pokemonData.sprites.front_default}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="${pokemonData.name}">
+        </div>
+        <div class="card-body">
+          <a href="/pokemons/${pokemonData.id}" class="btn btn-success rounded-pill px-4">
+            ${pokemonData.name}
+          </a>
         </div>
       </div>
-    `;
-    container.insertAdjacentHTML('beforeend', pokemonCard);
-  }
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', pokemonCard);
+}
 
-  window.onload = function() {
-    fetchKantoPokemon();
-  };
+// On page load, fetch based on search term
+window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchTerm = urlParams.get('search');
+  fetchKantoPokemon(searchTerm);
+};
 </script>
+
 {% endblock content %}

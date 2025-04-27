@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-success text-center">Trade Pokémon</h2>
+  <hr class="border-success" />
+
+  <h4 class="text-center">You are trading: {{ template_data.user_pokemon.name|title }} (${{ template_data.user_pokemon.price }})</h4>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="row mt-5">
+      {% for pokemon in template_data.available_pokemon %}
+      <div class="col-sm-6 col-md-4 col-lg-3 mb-4 text-center">
+        <label>
+          <input type="radio" name="selected_pokemon" value="{{ pokemon.id }}" required>
+          <div class="card shadow-sm border-0 rounded-4" style="background-color: #f8fff8;">
+            <div class="p-3">
+              <img src="{{ pokemon.image }}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="{{ pokemon.name }}">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title text-dark">{{ pokemon.name|title }}</h5>
+              <p class="text-success fw-semibold">${{ pokemon.price }}</p>
+            </div>
+          </div>
+        </label>
+      </div>
+      {% empty %}
+      <div class="col text-center">
+        <div class="alert alert-warning">No available Pokémon to trade for this price!</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-success rounded-pill px-5">Confirm Trade</button>
+    </div>
+  </form>
+</div>
+{% endblock content %}
