@@ -8,9 +8,17 @@
         <hr class="border-success" />
         <p><strong>Description:</strong> {{ template_data.pokemon.description }}</p>
         <p><strong>Price:</strong> ${{ template_data.pokemon.price }}</p>
+
+        <p><strong>Types:</strong> {{ template_data.pokemon.types }}</p>
+
+        <p><strong>Abilities:</strong> {{ template_data.pokemon.abilities }}</p>
+   
+        <p><strong>Stats:</strong> {{ template_data.pokemon.stats }}</p>
+       
+        <p><strong>Moves:</strong> {{ template_data.pokemon.moves }}</p>
+         
         <div class="alert alert-info">This Pokémon is shown from the public PokéAPI.</div>
-        {{ template_data.user_pokemon }}
-        {{ template_data.user_pokemon.id }}
+
         <a href="{% url 'accounts.trade' pokemon_id=template_data.pokemon.id %}" class="btn btn-success rounded-pill px-4">
           Trade
         </a>
