@@ -80,6 +80,18 @@ def profile(request):
         }
     })
 
+def other_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user_pokemons = Pokemon.objects.filter(owner=user)
+    return render(request, 'accounts/other_profile.html', {
+        'template_data': {
+            'user': user_id,
+            'team': "",
+            'total_pokemon': user_pokemons.count(),
+            'pokemons': user_pokemons,
+        }
+    })
+
 @login_required
 def trade(request, pokemon_id):
     user_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
