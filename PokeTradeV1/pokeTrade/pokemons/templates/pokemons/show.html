@@ -14,7 +14,7 @@
         <a href="{% url 'accounts.trade' pokemon_id=template_data.pokemon.id %}" class="btn btn-success rounded-pill px-4">
           Trade
         </a>
-        <a href="/pokemons/${pokemonData.id}" class="btn btn-success rounded-pill px-4">
+        <a href="{% url 'cart.add' id=template_data.pokemon.id %}" class="btn btn-success rounded-pill px-4">
           Buy
         </a>
       </div>

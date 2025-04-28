@@ -8,7 +8,7 @@
       <div class="col-md-10">
         <h2 class="text-center text-success mb-3">Shopping Cart</h2>
         <hr class="border-success" />
-        {% if template_data.pokemons_in_cart|length > 0 %}
+        {% if template_data.poke_in_cart|length > 0 %}
         <div class="card shadow-sm rounded-4 border-0" style="background-color: #f8fff8;">
           <div class="card-body p-4">
             <table class="table table-bordered table-hover table-striped text-center align-middle">
@@ -21,7 +21,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for pokemon in template_data.pokemons_in_cart %}
+                {% for pokemon in template_data.poke_in_cart %}
                 <tr>
                   <td>{{ pokemon.id }}</td>
                   <td class="fw-semibold">{{ pokemon.name }}</td>

@@ -21,13 +21,16 @@ def index(request):
     return render(request, 'cart/index.html', {'template_data': template_data})
 
 def add(request, id):
-    if request.method == "POST":
-        poke = get_object_or_404(Pokemon, id=id)
-        cart = request.session.get('cart', {})
-        # Only add the Pokemon if it's not already in the cart
-        if str(poke.id) not in cart:
-            cart[str(poke.id)] = True# You can store anything, even just True
-        request.session['cart'] = cart
+    # if request.method == "POST":
+    poke = get_object_or_404(Pokemon, id=id)
+    print(f"{poke}")
+    cart = request.session.get('cart', {})
+    # Only add the Pokemon if it's not already in the cart
+    if str(poke.id) not in cart:
+        print(f"{poke.name} is added to the cart")
+        cart[str(poke.id)] = True# You can store anything, even just True
+    request.session['cart'] = cart
+    print(f"{cart}")
     return redirect('cart.index')
 
 
@@ -50,13 +53,13 @@ def purchase(request):
     order.user = request.user
     order.total = cart_total
     order.save()
-
+    print(f"{cart}")
     for poke in poke_in_cart:
         item = Item()
-        item.poke = poke
+        item.pokemon = poke
         item.price = poke.price
         item.order = order
-        item.quantity = cart[str(poke.id)]
+        item.quantity = 1
         item.save()
 
     request.session['cart'] = {}
