@@ -9,6 +9,14 @@
         <p><strong>Description:</strong> {{ template_data.pokemon.description }}</p>
         <p><strong>Price:</strong> ${{ template_data.pokemon.price }}</p>
         <div class="alert alert-info">This Pokémon is shown from the public PokéAPI.</div>
+        {{ template_data.user_pokemon }}
+        {{ template_data.user_pokemon.id }}
+        <a href="{% url 'accounts.trade' pokemon_id=template_data.pokemon.id %}" class="btn btn-success rounded-pill px-4">
+          Trade
+        </a>
+        <a href="/pokemons/${pokemonData.id}" class="btn btn-success rounded-pill px-4">
+          Buy
+        </a>
       </div>
 
       <div class="col-lg-5 text-center mb-4">

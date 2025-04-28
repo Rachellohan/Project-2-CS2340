@@ -82,7 +82,7 @@ def profile(request):
 
 @login_required
 def trade(request, pokemon_id):
-    user_pokemon = get_object_or_404(Pokemon, id=pokemon_id, owner=request.user)
+    user_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
     available_pokemon = Pokemon.objects.filter(price=user_pokemon.price).exclude(owner=request.user)
 
     if request.method == 'POST':
