@@ -55,13 +55,15 @@ def purchase(request):
     order.save()
     print(f"{cart}")
     for poke in poke_in_cart:
+        poke.owner = request.user
+        poke.save()
+
         item = Item()
         item.pokemon = poke
         item.price = poke.price
         item.order = order
         item.quantity = 1
         item.save()
-
     request.session['cart'] = {}
     template_data = {}
     template_data['title'] = 'Purchase confirmation'
