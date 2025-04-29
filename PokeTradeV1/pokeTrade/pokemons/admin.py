@@ -3,10 +3,11 @@ from .models import Pokemon, Review
 from django.utils.html import mark_safe
 
 class PokeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'price', 'description', 'image_tag', 'owner')  # Update list_display to use image_tag
+    list_display = ('id', 'image_tag', 'price', 'name', 'types', 'abilities', 'stats', 'owner')  # Update list_display to use image_tag
     ordering = ['name']
     search_fields = ['name']
     list_filter = ('owner', 'price')
+
 
     def image_tag(self, obj):
         return mark_safe(f'<img src="{obj.image}" width="50px" height="50px" />')  # Display image as thumbnail

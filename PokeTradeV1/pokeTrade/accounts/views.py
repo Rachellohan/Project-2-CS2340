@@ -5,7 +5,8 @@ from django.contrib.auth import login as auth_login, authenticate, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, CustomErrorList
-from pokemons.models import Pokemon
+from .models import Pokemon
+from friends_page.models import Friend
 
 # Helper function to assign initial Pokémon
 def assign_initial_pokemon(user):
@@ -80,11 +81,33 @@ def profile(request):
         }
     })
 
+def other_profile(request, user_id):
+    teams = ['Team Valor', 'Team Instinct', 'Team Mystic']
+    random_team = random.choice(teams)
+    user = get_object_or_404(User, id=user_id)
+    user_pokemons = Pokemon.objects.filter(owner=user)
+    is_friend = Friend.objects.filter(user=request.user, friend=user).exists()
+
+    return render(request, 'accounts/other_profile.html', {
+        'template_data': {
+            'user': user,
+            'team': random_team,
+            'total_pokemon': user_pokemons.count(),
+            'pokemons': user_pokemons,
+            'is_friend': is_friend,
+        }
+    })
+
 @login_required
 def trade(request, pokemon_id):
-    user_pokemon = get_object_or_404(Pokemon, id=pokemon_id, owner=request.user)
-    available_pokemon = Pokemon.objects.filter(price=user_pokemon.price).exclude(owner=request.user)
-
+    user_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
+    if user_pokemon.owner == request.user:
+        # If the Pokémon is owned by the user, show available Pokémon of the same price
+        available_pokemon = Pokemon.objects.filter(price=user_pokemon.price).exclude(owner=request.user)
+    else:
+        # If the Pokémon is not owned by the user (i.e., they want to trade someone else's Pokémon)
+        # You can decide how you want to handle this case; for now, we'll show the Pokémon that the user can trade with
+        available_pokemon = Pokemon.objects.filter(owner=request.user, price=user_pokemon.price)
     if request.method == 'POST':
         selected_pokemon_id = request.POST.get('selected_pokemon')
         selected_pokemon = get_object_or_404(Pokemon, id=selected_pokemon_id)

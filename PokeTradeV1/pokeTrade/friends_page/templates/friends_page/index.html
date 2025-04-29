@@ -53,7 +53,7 @@
       </div class="item-list">
       {% for player in template_data.players %}
           <div class="item-box">
-            <a href="#"> {{player.username }}</a>
+            <a href="{% url 'accounts.other_profile' user_id=player.id %}">{{ player.username }}</a>
           </div>
       {% empty %}
           <div class="empty">No Players</div>
@@ -66,7 +66,7 @@
         </div class="item-list">
         {% for friend in template_data.friends %}
             <div class="item-box">
-              <a href="#"> {{ friend.username }} </a>
+              <a href="{% url 'accounts.other_profile' user_id=friend.id %}"> {{ friend.username }} </a>
               </div>
         {% empty %}
         <div class="empty-message">No friends</div>
