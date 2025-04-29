@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from friends_page.models import Friend
 from .forms import CustomUserCreationForm, CustomErrorList
 from pokemons.models import Pokemon
 
@@ -92,6 +93,7 @@ def profile(request):
 def other_profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user_pokemons = Pokemon.objects.filter(owner=user)
+    is_friend = Friend.objects.filter(user=request.user, friend=user).exists()
     teams = ['Team Valor', 'Team Instinct', 'Team Mystic']
     random_team = random.choice(teams)
     return render(request, 'accounts/other_profile.html', {
@@ -100,6 +102,7 @@ def other_profile(request, user_id):
             'team': random_team,
             'total_pokemon': user_pokemons.count(),
             'pokemons': user_pokemons,
+            'is_friend': is_friend,
         }
     })
 
