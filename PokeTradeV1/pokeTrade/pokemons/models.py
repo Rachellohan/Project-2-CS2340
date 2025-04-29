@@ -10,10 +10,10 @@ class Pokemon(models.Model):
     image = models.URLField()  
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default="5")
 
-    types = models.CharField(max_length=255, blank=True)  # store comma-separated types
-    abilities = models.TextField(blank=True)  # multiple abilities
-    moves = models.TextField(blank=True)      # potentially many
-    stats = models.TextField(blank=True)      # can store as JSON or key-value
+    types = models.CharField(max_length=255, blank=True)  
+    abilities = models.TextField(blank=True) 
+    moves = models.TextField(blank=True)     
+    stats = models.TextField(blank=True)      
 
 
     def __str__(self):

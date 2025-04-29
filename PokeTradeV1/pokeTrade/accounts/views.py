@@ -20,7 +20,7 @@ def assign_initial_pokemon(user):
                 name=data['name'],
                 image=data['sprites']['front_default'],
                 owner=user,
-                price=random.randint(1, 20)  # 🎯 Random price between 1 and 20
+                price=random.randint(1, 20)  
             )
 
 @login_required
@@ -53,7 +53,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST, error_class=CustomErrorList)
         if form.is_valid():
             user = form.save()
-            assign_initial_pokemon(user)  # Assign starter Pokémon with random price
+            assign_initial_pokemon(user)  
             return redirect('accounts.login')
         else:
             template_data['form'] = form

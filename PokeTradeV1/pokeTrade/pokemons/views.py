@@ -32,24 +32,19 @@ def show(request, id):
     return render(request, 'pokemons/show.html', {'template_data': template_data})
 
 def fetch_pokemons(request):
-    search_term = request.GET.get('search', '')  # Default to an empty string if no search term
+    search_term = request.GET.get('search', '')  
     sort = request.GET.get('sort')
 
-    # Query Pokémon from the database
-    pokemons = Pokemon.objects.all()  # Fetch all Pokémon
+    # database stuff
+    pokemons = Pokemon.objects.all() 
     if search_term:
-        pokemons = pokemons.filter(name__icontains=search_term)  # Filter based on the search term
-
+        pokemons = pokemons.filter(name__icontains=search_term)
     if sort == 'price_asc':
         pokemons = pokemons.order_by('price')
     elif sort == 'price_desc':
         pokemons = pokemons.order_by('-price')
-    elif sort == 'attack_desc':
-        pokemons = sorted(pokemons, key=lambda p: int(eval(p.stats).get('attack', 0)), reverse=True)
-    elif sort == 'attack_asc':
-        pokemons = sorted(pokemons, key=lambda p: int(eval(p.stats).get('attack', 0)))
+   
 
-    # Prepare the data to send to the frontend
     pokemons_data = [
         {
             'id': pokemon.id,
@@ -103,10 +98,8 @@ def delete_review(request, id, review_id):
 
 def show(request, id):
     try:
-        # Try to get the Pokemon from the database
         pokemon = Pokemon.objects.get(pk=id)
     except Pokemon.DoesNotExist:
-        # If the Pokémon is not found in the DB, fetch it from PokéAPI
         url = f"https://pokeapi.co/api/v2/pokemon/{id}/"
         response = requests.get(url)
 
@@ -114,27 +107,19 @@ def show(request, id):
             return render(request, "404.html", status=404)
 
         data = response.json()
-
-        # Extract types
         types = [t['type']['name'] for t in data['types']]
         type_string = ', '.join(types)
-
-        # Extract abilities
         abilities = [a['ability']['name'] for a in data['abilities']]
         ability_string = ', '.join(abilities)
 
-        # Extract stats
         stats = {s['stat']['name']: s['base_stat'] for s in data['stats']}
-        stats_string = str(stats)  # Convert the stats dictionary to a string (or JSON if preferred)
+        stats_string = str(stats)  
 
-        # Extract moves (just first 5 for brevity)
         moves = [m['move']['name'] for m in data['moves'][:5]]
         move_string = ', '.join(moves)
 
-        # Get the default owner
         default_user = User.objects.first()
 
-        # Create new Pokémon entry in the database
         pokemon = Pokemon.objects.create(
             id=id,
             name=data['name'].capitalize(),
@@ -144,11 +129,10 @@ def show(request, id):
             owner=default_user,
             types=type_string,
             abilities=ability_string,
-            stats=stats_string,  # Save stats as a string
+            stats=stats_string,  
             moves=move_string
         )
 
-    # Get the reviews associated with this Pokémon
     reviews = Review.objects.filter(pokemon=pokemon)
 
     return render(request, "pokemons/show.html", {
@@ -160,15 +144,12 @@ def show(request, id):
 
 
 def pokemon_list(request):
-    sort_by = request.GET.get('sort_by', 'name')  # Default sort by name
+    sort_by = request.GET.get('sort_by', 'name')  
 
-    # Define possible fields to sort by
     if sort_by == 'price':
         pokemons = Pokemon.objects.all().order_by('price')
     elif sort_by == 'stats':
-        # Assuming stats is a JSON field or you have a specific way to store stats for sorting
-        # If stats are stored as JSON, you might need to sort based on a specific key in the stats (e.g., 'attack')
-        pokemons = Pokemon.objects.all().order_by('stats')  # This is just an example, adjust according to your model
+        pokemons = Pokemon.objects.all().order_by('stats') 
     else:
         pokemons = Pokemon.objects.all()
 

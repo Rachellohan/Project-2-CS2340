@@ -14,8 +14,5 @@ for pokemon in pokemons:
         pokemon.price = random.randint(1, 20)
         pokemon.save()
         print(f"Assigned ${pokemon.price} to {pokemon.name}")
-
 print("Done assigning prices!")
-
-# To run: python3 populate_money.py
 

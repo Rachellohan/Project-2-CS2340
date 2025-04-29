@@ -8,7 +8,7 @@
       <div class="col-md-10 text-center mb-4">
         <h2 class="text-success">List of Pokémon</h2>
         <hr class="border-success" />
-        <!-- SEARCH FORM -->
+        <!-- SEARCH feature-->
         <form method="GET" action="" onsubmit="return validateSearch()" class="d-flex justify-content-center">
           <div class="input-group w-50">
             <span class="input-group-text bg-success text-white fw-semibold">Search</span>
@@ -31,13 +31,11 @@
     </div>
 
     <div class="row" id="pokemon-container">
-      <!-- Pokémon cards will be dynamically inserted here -->
     </div>
   </div>
 </div>
 
 <script>
-// Prevent empty search submissions
 function validateSearch() {
   const searchInput = document.querySelector('input[name="search"]').value;
   if (searchInput.trim() === "") {
@@ -46,7 +44,6 @@ function validateSearch() {
   return true;
 }
 
-// Fetch Pokémon from the Django database
 function fetchPokemonsFromDjango(searchTerm) {
   const url = new URL('/pokemons/fetch_pokemons/', window.location.origin);
   if (searchTerm) {
@@ -84,7 +81,7 @@ function displayPokemon(pokemonData) {
   container.insertAdjacentHTML('beforeend', pokemonCard);
 }
 
-// On page load
+//page loading 
 window.onload = function() {
   const urlParams = new URLSearchParams(window.location.search);
   const searchTerm = urlParams.get('search');
