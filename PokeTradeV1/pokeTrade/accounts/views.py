@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, CustomErrorList
 from pokemons.models import Pokemon
 
-# Helper function to assign initial Pokémon
+
 def assign_initial_pokemon(user):
     starter_pokemon = ['bulbasaur', 'charmander', 'squirtle']
 
@@ -65,7 +65,7 @@ def orders(request):
 
     user_orders = request.user.order_set.all()
 
-    # Correct lowercase field name
+    
     for order in user_orders:
         order.items = order.item_set.filter(pokemon__isnull=False)
 
@@ -107,11 +107,10 @@ def other_profile(request, user_id):
 def trade(request, pokemon_id):
     user_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
     if user_pokemon.owner == request.user:
-        # If the Pokémon is owned by the user, show available Pokémon of the same price
+        
         available_pokemon = Pokemon.objects.filter(price=user_pokemon.price).exclude(owner=request.user)
     else:
-        # If the Pokémon is not owned by the user (i.e., they want to trade someone else's Pokémon)
-        # You can decide how you want to handle this case; for now, we'll show the Pokémon that the user can trade with
+        
         available_pokemon = Pokemon.objects.filter(owner=request.user, price=user_pokemon.price)
     if request.method == 'POST':
         selected_pokemon_id = request.POST.get('selected_pokemon')

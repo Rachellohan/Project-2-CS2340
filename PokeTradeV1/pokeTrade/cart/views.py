@@ -21,14 +21,14 @@ def index(request):
     return render(request, 'cart/index.html', {'template_data': template_data})
 
 def add(request, id):
-    # if request.method == "POST":
+    
     poke = get_object_or_404(Pokemon, id=id)
     print(f"{poke}")
     cart = request.session.get('cart', {})
-    # Only add the Pokemon if it's not already in the cart
+    
     if str(poke.id) not in cart:
         print(f"{poke.name} is added to the cart")
-        cart[str(poke.id)] = True# You can store anything, even just True
+        cart[str(poke.id)] = True
     request.session['cart'] = cart
     print(f"{cart}")
     return redirect('cart.index')
