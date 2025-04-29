@@ -18,12 +18,12 @@
           <img src="{{ pokemon.image }}" class="card-img-top rounded shadow-sm" style="height: 200px; object-fit: contain;" alt="{{ pokemon.name }}">
         </div>
         <div class="card-body">
-          <!-- View Button -->
+         
           <a href="{% url 'pokemons.show' id=pokemon.id %}" class="btn btn-success rounded-pill px-4">
             {{ pokemon.name|title }}
           </a>
 
-          <!-- Trade Button (NEW) -->
+         
           <a href="{% url 'accounts.trade' pokemon.id %}" class="btn btn-outline-success rounded-pill mt-2">
             Trade
           </a>
