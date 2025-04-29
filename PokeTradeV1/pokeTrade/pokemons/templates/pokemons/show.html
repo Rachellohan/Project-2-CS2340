@@ -18,16 +18,13 @@
         <p><strong>Moves:</strong> {{ template_data.pokemon.moves }}</p>
          
         <div class="alert alert-info">This Pokémon is shown from the public PokéAPI.</div>
-<<<<<<< HEAD
 
-        <a href="{% url 'accounts.trade' pokemon_id=template_data.pokemon.id %}" class="btn btn-success rounded-pill px-4">
-=======
-        {{ template_data.user_pokemon }}
-        {{ template_data.user_pokemon.id }}
+        <!-- Trade Button -->
         <a href="{% url 'accounts.trade' pokemon_id=template_data.pokemon.id %}" class="btn btn-outline-success rounded-pill mt-2">
->>>>>>> 8bcf4913221da432102fb3e6260b57ff62a91f4c
           Trade
         </a>
+
+        <!-- Buy Button -->
         <a href="{% url 'cart.add' id=template_data.pokemon.id %}" class="btn btn-success rounded-pill px-4">
           Buy
         </a>
