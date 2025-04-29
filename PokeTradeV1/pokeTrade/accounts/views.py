@@ -92,10 +92,12 @@ def profile(request):
 def other_profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user_pokemons = Pokemon.objects.filter(owner=user)
+    teams = ['Team Valor', 'Team Instinct', 'Team Mystic']
+    random_team = random.choice(teams)
     return render(request, 'accounts/other_profile.html', {
         'template_data': {
-            'user': user_id,
-            'team': "",
+            'user': user,
+            'team': random_team,
             'total_pokemon': user_pokemons.count(),
             'pokemons': user_pokemons,
         }
