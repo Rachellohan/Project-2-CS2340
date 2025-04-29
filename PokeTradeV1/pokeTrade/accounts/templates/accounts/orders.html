@@ -26,15 +26,15 @@
                 </tr>
               </thead>
               <tbody>
-                {% for item in order.item_set.all %}
+                {% for item in order.items %}
                 <tr>
-                  <td>{{ item.Pokemon.id }}</td>
+                  <td>{{ item.pokemon.id }}</td>
                   <td>
-                    <a class="link-success fw-semibold" href="{% url 'Pokemons.show' id=item.Pokemon.id %}">
-                      {{ item.Pokemon.name }}
+                    <a class="link-success fw-semibold" href="{% url 'pokemons.show' id=item.pokemon.id %}">
+                      {{ item.pokemon.name }}
                     </a>
                   </td>
-                  <td>${{ item.Pokemon.price }}</td>
+                  <td>${{ item.price }}</td>
                   <td>{{ item.quantity }}</td>
                 </tr>
                 {% endfor %}

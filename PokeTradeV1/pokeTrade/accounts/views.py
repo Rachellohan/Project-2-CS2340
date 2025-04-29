@@ -62,8 +62,17 @@ def signup(request):
 def orders(request):
     template_data = {}
     template_data['title'] = 'Orders'
-    template_data['orders'] = request.user.order_set.all()
+
+    user_orders = request.user.order_set.all()
+
+    # Correct lowercase field name
+    for order in user_orders:
+        order.items = order.item_set.filter(pokemon__isnull=False)
+
+    template_data['orders'] = user_orders
     return render(request, 'accounts/orders.html', {'template_data': template_data})
+
+
 
 @login_required
 def profile(request):
