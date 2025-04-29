@@ -15,17 +15,6 @@
             <input type="text" class="form-control border-success" name="search" placeholder="Search by name..." value="{{ request.GET.search }}">
             <button class="btn btn-success" type="submit">Go</button>
           </div>
-          <form method="GET" action="" onsubmit="return validateSearch()" class="d-flex justify-content-center gap-2">
-           
-            <select id="sortDropdown" class="form-select w-auto border-success" onchange="handleSortChange()">
-              <option value="">Sort by...</option>
-              <option value="price_desc">Price ↓</option>
-              <option value="price_asc">Price ↑</option>
-              
-              
-            </select>
-          </form>
-          
         </form>
       </div>
     </div>
@@ -90,28 +79,6 @@ window.onload = function() {
   const searchTerm = urlParams.get('search');
   fetchPokemonsFromDjango(searchTerm || '');
 };
-function fetchPokemonsFromDjango(searchTerm, sortValue) {
-  const url = new URL('/pokemons/fetch_pokemons/', window.location.origin);
-  if (searchTerm) url.searchParams.append('search', searchTerm);
-  if (sortValue) url.searchParams.append('sort', sortValue);
-
-  fetch(url)
-    .then(response => response.json())
-    .then(function(allpokemon) {
-      const container = document.getElementById('pokemon-container');
-      container.innerHTML = '';
-      allpokemon.results.forEach(function(pokemon) {
-        displayPokemon(pokemon);
-      });
-    });
-}
-
-function handleSortChange() {
-  const sortValue = document.getElementById('sortDropdown').value;
-  const searchTerm = document.querySelector('input[name="search"]').value;
-  fetchPokemonsFromDjango(searchTerm, sortValue);
-}
-
 </script>
 
 {% endblock content %}

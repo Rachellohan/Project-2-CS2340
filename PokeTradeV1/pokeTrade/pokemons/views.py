@@ -33,21 +33,11 @@ def show(request, id):
 
 def fetch_pokemons(request):
     search_term = request.GET.get('search', '')  # Default to an empty string if no search term
-    sort = request.GET.get('sort')
 
     # Query Pokémon from the database
     pokemons = Pokemon.objects.all()  # Fetch all Pokémon
     if search_term:
         pokemons = pokemons.filter(name__icontains=search_term)  # Filter based on the search term
-
-    if sort == 'price_asc':
-        pokemons = pokemons.order_by('price')
-    elif sort == 'price_desc':
-        pokemons = pokemons.order_by('-price')
-    elif sort == 'attack_desc':
-        pokemons = sorted(pokemons, key=lambda p: int(eval(p.stats).get('attack', 0)), reverse=True)
-    elif sort == 'attack_asc':
-        pokemons = sorted(pokemons, key=lambda p: int(eval(p.stats).get('attack', 0)))
 
     # Prepare the data to send to the frontend
     pokemons_data = [
