@@ -5,7 +5,8 @@ from django.contrib.auth import login as auth_login, authenticate, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, CustomErrorList
-from pokemons.models import Pokemon
+from .models import Pokemon
+from friends_page.models import Friend
 
 # Helper function to assign initial Pokémon
 def assign_initial_pokemon(user):
@@ -85,12 +86,15 @@ def other_profile(request, user_id):
     random_team = random.choice(teams)
     user = get_object_or_404(User, id=user_id)
     user_pokemons = Pokemon.objects.filter(owner=user)
+    is_friend = Friend.objects.filter(user=request.user, friend=user).exists()
+
     return render(request, 'accounts/other_profile.html', {
         'template_data': {
             'user': user,
             'team': random_team,
             'total_pokemon': user_pokemons.count(),
             'pokemons': user_pokemons,
+            'is_friend': is_friend,
         }
     })
 
